@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shoes_app/src/pages/zapato_desc_page.dart';
 
 class ZapatoSizePreview extends StatelessWidget {
   final bool fullScreen;
@@ -7,35 +9,42 @@ class ZapatoSizePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: fullScreen ? 5 : 30,
-        vertical: fullScreen ? 5 : 0,
-      ),
-      child: Container(
-          width: double.infinity,
-          height: fullScreen ? 410 : 430,
-          decoration: BoxDecoration(
-            color: Color(0xffFFCF53),
-            borderRadius: fullScreen
-                ? BorderRadius.only(
-                    bottomLeft: Radius.circular(50),
-                    bottomRight: Radius.circular(50),
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                  )
-                : BorderRadius.circular(50),
-          ),
-          child: Column(
-            children: <Widget>[
-              // Zapato con sombra
-              _ZapatoConSombra(),
+    return GestureDetector(
+      onTap: () {
+        if(!fullScreen) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => ZapatoDescPage()));
+        }
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: fullScreen ? 5 : 30,
+          vertical: fullScreen ? 5 : 0,
+        ),
+        child: Container(
+            width: double.infinity,
+            height: fullScreen ? 410 : 430,
+            decoration: BoxDecoration(
+              color: Color(0xffFFCF53),
+              borderRadius: fullScreen
+                  ? BorderRadius.only(
+                      bottomLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50),
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    )
+                  : BorderRadius.circular(50),
+            ),
+            child: Column(
+              children: <Widget>[
+                // Zapato con sombra
+                _ZapatoConSombra(),
 
-              // Tallas
-              if (!fullScreen)
-                _ZapatoTallas()
-            ],
-          )),
+                // Tallas
+                if (!fullScreen)
+                  _ZapatoTallas()
+              ],
+            )),
+      ),
     );
   }
 }
