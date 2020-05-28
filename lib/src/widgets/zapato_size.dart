@@ -37,7 +37,7 @@ class _ZapatoTallas extends StatelessWidget {
           _TallaZapatoCaja(7.5),
           _TallaZapatoCaja(8),
           _TallaZapatoCaja(8.5),
-          _TallaZapatoCaja(9),
+          _TallaZapatoCaja(9, isSeleccionado: true,),
           _TallaZapatoCaja(9.5),
         ],
       ),
@@ -47,8 +47,9 @@ class _ZapatoTallas extends StatelessWidget {
 
 class _TallaZapatoCaja extends StatelessWidget {
   final double numero;
+  final bool isSeleccionado;
 
-  const _TallaZapatoCaja(this.numero);
+  const _TallaZapatoCaja(this.numero, {this.isSeleccionado = false});
 
   @override
   Widget build(BuildContext context) {
@@ -57,17 +58,17 @@ class _TallaZapatoCaja extends StatelessWidget {
       child: Text(
         numero.toString().replaceAll('.0', ''),
         style: TextStyle(
-            color: Color(0xffF1A23A),
+            color: isSeleccionado ? Colors.white : Color(0xFFF1A23A),
             fontSize: 16,
             fontWeight: FontWeight.bold),
       ),
       width: 45,
       height: 45,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isSeleccionado ? Color(0xFFF1A23A) : Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          // TODO: BoxShadow()
+          if(isSeleccionado) BoxShadow(color: Color(0xFFF1A23A), blurRadius: 10, offset: Offset(0, 5))
         ]
       ),
     );
