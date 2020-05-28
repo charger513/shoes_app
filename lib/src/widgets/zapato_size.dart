@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shoes_app/src/models/zapato_model.dart';
 import 'package:shoes_app/src/pages/zapato_desc_page.dart';
 
 class ZapatoSizePreview extends StatelessWidget {
@@ -11,8 +13,9 @@ class ZapatoSizePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if(!fullScreen) {
-          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => ZapatoDescPage()));
+        if (!fullScreen) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (ctx) => ZapatoDescPage()));
         }
       },
       child: Padding(
@@ -61,10 +64,7 @@ class _ZapatoTallas extends StatelessWidget {
           _TallaZapatoCaja(7.5),
           _TallaZapatoCaja(8),
           _TallaZapatoCaja(8.5),
-          _TallaZapatoCaja(
-            9,
-            isSeleccionado: true,
-          ),
+          _TallaZapatoCaja(9),
           _TallaZapatoCaja(9.5),
         ],
       ),
@@ -74,33 +74,41 @@ class _ZapatoTallas extends StatelessWidget {
 
 class _TallaZapatoCaja extends StatelessWidget {
   final double numero;
-  final bool isSeleccionado;
-
-  const _TallaZapatoCaja(this.numero, {this.isSeleccionado = false});
+  const _TallaZapatoCaja(this.numero);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Text(
-        numero.toString().replaceAll('.0', ''),
-        style: TextStyle(
-            color: isSeleccionado ? Colors.white : Color(0xFFF1A23A),
-            fontSize: 16,
-            fontWeight: FontWeight.bold),
+    final zapatoModel = Provider.of<ZapatoModel>(context);
+
+    return GestureDetector(
+      onTap: () {
+        Provider.of<ZapatoModel>(context, listen: false).talla = numero;
+      },
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(
+          numero.toString().replaceAll('.0', ''),
+          style: TextStyle(
+              color: numero == zapatoModel.talla
+                  ? Colors.white
+                  : Color(0xFFF1A23A),
+              fontSize: 16,
+              fontWeight: FontWeight.bold),
+        ),
+        width: 45,
+        height: 45,
+        decoration: BoxDecoration(
+            color:
+                numero == zapatoModel.talla ? Color(0xFFF1A23A) : Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              if (numero == zapatoModel.talla)
+                BoxShadow(
+                    color: Color(0xFFF1A23A),
+                    blurRadius: 10,
+                    offset: Offset(0, 5))
+            ]),
       ),
-      width: 45,
-      height: 45,
-      decoration: BoxDecoration(
-          color: isSeleccionado ? Color(0xFFF1A23A) : Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            if (isSeleccionado)
-              BoxShadow(
-                  color: Color(0xFFF1A23A),
-                  blurRadius: 10,
-                  offset: Offset(0, 5))
-          ]),
     );
   }
 }
