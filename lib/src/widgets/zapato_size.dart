@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 
 class ZapatoSizePreview extends StatelessWidget {
+  final bool fullScreen;
+
+  const ZapatoSizePreview({this.fullScreen = false});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+      padding: EdgeInsets.symmetric(
+        horizontal: fullScreen ? 5 : 30,
+        vertical: fullScreen ? 5 : 0,
+      ),
       child: Container(
           width: double.infinity,
-          height: 430,
+          height: fullScreen ? 410 : 430,
           decoration: BoxDecoration(
             color: Color(0xffFFCF53),
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: fullScreen
+                ? BorderRadius.only(
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  )
+                : BorderRadius.circular(50),
           ),
           child: Column(
             children: <Widget>[
@@ -18,7 +32,8 @@ class ZapatoSizePreview extends StatelessWidget {
               _ZapatoConSombra(),
 
               // Tallas
-              _ZapatoTallas()
+              if (!fullScreen)
+                _ZapatoTallas()
             ],
           )),
     );
@@ -37,7 +52,10 @@ class _ZapatoTallas extends StatelessWidget {
           _TallaZapatoCaja(7.5),
           _TallaZapatoCaja(8),
           _TallaZapatoCaja(8.5),
-          _TallaZapatoCaja(9, isSeleccionado: true,),
+          _TallaZapatoCaja(
+            9,
+            isSeleccionado: true,
+          ),
           _TallaZapatoCaja(9.5),
         ],
       ),
@@ -65,12 +83,15 @@ class _TallaZapatoCaja extends StatelessWidget {
       width: 45,
       height: 45,
       decoration: BoxDecoration(
-        color: isSeleccionado ? Color(0xFFF1A23A) : Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          if(isSeleccionado) BoxShadow(color: Color(0xFFF1A23A), blurRadius: 10, offset: Offset(0, 5))
-        ]
-      ),
+          color: isSeleccionado ? Color(0xFFF1A23A) : Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            if (isSeleccionado)
+              BoxShadow(
+                  color: Color(0xFFF1A23A),
+                  blurRadius: 10,
+                  offset: Offset(0, 5))
+          ]),
     );
   }
 }
